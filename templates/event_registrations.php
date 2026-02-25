@@ -151,7 +151,7 @@ $registrations = getRegistrationsByEvent($event_id);
                         <td class="<?php echo $class_name; ?>"><?php echo $status; ?></td>
 
                         <td>
-                            <?php if ($status != 'Approved'): ?>
+                            <?php if (strtolower($status) == 'pending'): ?>
                                 <form action="/routes/Registration.php" method="POST" style="display:inline-block; margin: 0;">
                                     <input type="hidden" name="action" value="update_status">
                                     <input type="hidden" name="registration_id" value="<?php echo $reg['registration_id']; ?>">
@@ -159,15 +159,21 @@ $registrations = getRegistrationsByEvent($event_id);
                                     <input type="hidden" name="status" value="approved">
                                     <button type="submit" class="btn" style="cursor: pointer; color: #27ae60;" onclick="return confirm('ยืนยันการอนุมัติ?');">✅ อนุมัติ</button>
                                 </form>
-                            <?php endif; ?>
 
-                            <?php if ($status != 'Rejected'): ?>
                                 <form action="/routes/Registration.php" method="POST" style="display:inline-block; margin: 0;">
                                     <input type="hidden" name="action" value="update_status">
                                     <input type="hidden" name="registration_id" value="<?php echo $reg['registration_id']; ?>">
                                     <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
                                     <input type="hidden" name="status" value="rejected">
                                     <button type="submit" class="btn" style="cursor: pointer; color: #e74c3c;" onclick="return confirm('ยืนยันการปฏิเสธ?');">❌ ปฏิเสธ</button>
+                                </form>
+                            <?php else: ?>
+                                <form action="/routes/Registration.php" method="POST" style="display:inline-block; margin: 0;">
+                                    <input type="hidden" name="action" value="update_status">
+                                    <input type="hidden" name="registration_id" value="<?php echo $reg['registration_id']; ?>">
+                                    <input type="hidden" name="event_id" value="<?php echo $event_id; ?>">
+                                    <input type="hidden" name="status" value="pending">
+                                    <button type="submit" class="btn" style="cursor: pointer; color: #f39c12;" onclick="return confirm('ต้องการยกเลิกและนำกลับไปพิจารณาใหม่ใช่หรือไม่?');">🔄 ยกเลิก</button>
                                 </form>
                             <?php endif; ?>
                         </td>

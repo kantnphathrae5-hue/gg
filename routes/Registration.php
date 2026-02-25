@@ -36,12 +36,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $status = $_POST['status'] ?? ''; 
         $event_id = $_POST['event_id'] ?? 0; 
 
-        // ตรวจสอบว่าส่งค่ามาครบไหม
-        if ($registration_id > 0 && in_array($status, ['approved', 'rejected'])) {
+        // ตรวจสอบว่าส่งค่ามาครบไหม (เพิ่ม 'pending' เข้าไปใน in_array ตรงนี้ครับ)
+        if ($registration_id > 0 && in_array($status, ['approved', 'rejected', 'pending'])) {
             
             // เรียกใช้ฟังก์ชันอัปเดตสถานะในฐานข้อมูล
             if (updateRegistrationStatus($registration_id, $status)) {
-                $msg = ($status == 'approved') ? 'อนุมัติผู้เข้าร่วมแล้ว' : 'ปฏิเสธผู้เข้าร่วมแล้ว';
+                
+                // กำหนดข้อความ Alert ตามสถานะที่ถูกส่งมา
+                if ($status == 'approved') {
+                    $msg = 'อนุมัติผู้เข้าร่วมแล้ว';
+                } elseif ($status == 'rejected') {
+                    $msg = 'ปฏิเสธผู้เข้าร่วมแล้ว';
+                } else {
+                    $msg = 'ยกเลิกสถานะ กลับไปเป็นรอดำเนินการเรียบร้อยแล้ว';
+                }
+
                 echo "<script>
                         alert('$msg'); 
                         window.location.href='/templates/event_registrations.php?event_id=$event_id';
