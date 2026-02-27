@@ -6,7 +6,7 @@ require_once '../databases/Registrations.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = $_POST['action'] ?? '';
 
-    // --- 1. ส่วนขอเข้าร่วมกิจกรรม (ผู้เข้าร่วมกด) ---
+    // ส่วนขอเข้าร่วมกิจกรรม 
     if ($action == 'request_join') {
         
         if (empty($_SESSION['user_id'])) {
@@ -29,20 +29,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
     
-    // --- 2. ส่วนจัดการการอนุมัติ/ปฏิเสธ (ผู้จัดงานกด) --- 
+    // การอนุมัติ/ปฏิเสธ
     elseif ($action == 'update_status') {
         
         $registration_id = $_POST['registration_id'] ?? 0;
         $status = $_POST['status'] ?? ''; 
         $event_id = $_POST['event_id'] ?? 0; 
 
-        // ตรวจสอบว่าส่งค่ามาครบไหม (เพิ่ม 'pending' เข้าไปใน in_array ตรงนี้ครับ)
+        
         if ($registration_id > 0 && in_array($status, ['approved', 'rejected', 'pending'])) {
             
-            // เรียกใช้ฟังก์ชันอัปเดตสถานะในฐานข้อมูล
+           
             if (updateRegistrationStatus($registration_id, $status)) {
                 
-                // กำหนดข้อความ Alert ตามสถานะที่ถูกส่งมา
+                
                 if ($status == 'approved') {
                     $msg = 'อนุมัติผู้เข้าร่วมแล้ว';
                 } elseif ($status == 'rejected') {

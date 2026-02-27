@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-// ถ้ายังไม่ล็อกอิน ให้เด้งกลับไปหน้า Login
+
 if (!isset($_SESSION['user_id'])) {
     header("Location: /templates/sign_in.php");
     exit();
 }
 
-// ใช้ ?? 'ผู้ใช้งาน' เพื่อป้องกัน Error กรณีหาชื่อไม่เจอ
+
 $user_name = $_SESSION['name'] ?? 'ผู้ใช้งาน';
 $user_id = $_SESSION['user_id'];
 ?>

@@ -73,14 +73,14 @@ $registrations = getRegistrationsByEvent($event_id);
         }
 
         .modal {
-            display: none; /* ซ่อนไว้เป็นค่าเริ่มต้น */
+            display: none; 
             position: fixed;
             z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.5); /* พื้นหลังสีดำโปร่งแสง */
+            background-color: rgba(0,0,0,0.5); 
         }
 
         .modal-content {

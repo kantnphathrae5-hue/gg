@@ -9,11 +9,15 @@ function getUser():mysqli_result|bool
 
 function createUser($data) {
     global $conn;
+    
     if (!isset($data['name'])) {
         die("Error: Name data is missing.");
     }
 
-   
+    if (getUserByEmail($data['email'])) {
+        return false; 
+    }
+
     $hashed_password = password_hash($data['password'], PASSWORD_DEFAULT);
 
     $sql = "INSERT INTO Users (name, gender, birthdate, province, email, password) VALUES (?, ?, ?, ?, ?, ?)";
@@ -30,6 +34,7 @@ function createUser($data) {
 
     $result = $stmt->execute();
     $stmt->close();
+    
     return $result;
 }
 
@@ -47,26 +52,5 @@ function getUserByEmail($email) {
     return null;
 }
 
-function registerUser($name, $email, $password, $gender, $birth_date, $province) {
-    global $conn;
-    
-   
-    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-    
- 
-    $sql = "INSERT INTO users (name, email, password, gender, birthdate, province) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    
-    
-    if (!$stmt) {
-        die("เกิดข้อผิดพลาดกับคำสั่ง SQL: " . $conn->error);
-    }
-    
-    $stmt->bind_param("ssssss", $name, $email, $hashed_password, $gender, $birth_date, $province);
-    
-    $result = $stmt->execute();
-    $stmt->close();
-    return $result;
-}
-    
+
 ?>

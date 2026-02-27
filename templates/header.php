@@ -8,7 +8,7 @@
         <div>
             <b>ชื่อผู้ใช้:</b> <?php echo htmlspecialchars($_SESSION['name'] ?? 'ผู้ใช้งาน'); ?> &nbsp;|&nbsp;
 
-            <a href="/templates/profile.php" style="text-decoration: none; font-weight: bold; color: #3498db;">👤 ข้อมูลบัญชี</a> &nbsp;|&nbsp;
+            <a href="/templates/profile.php" style="text-decoration: none; font-weight: bold; color: black;">👤 ข้อมูลบัญชี</a> &nbsp;|&nbsp;
 
             <a href="/templates/history.php" style="text-decoration: none; color: black;">📜 ประวัติการเข้าร่วม</a> &nbsp;|&nbsp;
             <a href="/templates/manage_event.php" style="text-decoration: none; color: black;">⚙️ จัดการกิจกรรม</a> &nbsp;|&nbsp;

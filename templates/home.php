@@ -9,12 +9,12 @@ if (empty($_SESSION['user_id'])) {
     exit();
 }
 
-// รับค่าจากฟอร์มค้นหา (ถ้าไม่มีค่าจะกำหนดให้เป็นค่าว่าง '')
+
 $search_name = $_GET['search_name'] ?? '';
 $start_date = $_GET['start_date'] ?? '';
 $end_date = $_GET['end_date'] ?? '';
 
-// เรียกใช้ฟังก์ชันค้นหาแทน getEventsForHome แบบเดิม
+
 $events = searchEventsForHome($_SESSION['user_id'], $search_name, $start_date, $end_date);
 ?>
 
@@ -41,7 +41,7 @@ $events = searchEventsForHome($_SESSION['user_id'], $search_name, $start_date, $
             background-color: #f2f2f2;
         }
 
-        /* ตกแต่งฟอร์มค้นหา */
+        
         .search-container {
             background-color: #f9f9f9;
             padding: 15px;

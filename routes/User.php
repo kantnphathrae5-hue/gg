@@ -6,7 +6,7 @@ require_once '../databases/Users.php';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = $_POST['action'] ?? '';
 
-    // --- ส่วนสมัครสมาชิก ---
+    // สมัครสมาชิก
     if ($action == 'register') {
         $userData = [
             'name'      => $_POST['name']?? null,
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
         exit();
     
-    // --- ส่วนเข้าสู่ระบบ ---
+    // เข้าสู่ระบบ 
     } elseif ($action == 'login') {
         $email = $_POST['email'];
         $password = $_POST['password'];
@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = getUserByEmail($email);
 
         if ($user) {
-            // จุดนี้แหละครับที่ระบบจะจำ ID และ ชื่อ (ต้องใช้ชื่อคอลัมน์ 'name' ตามฐานข้อมูลคุณ)
+           
             $_SESSION['user_id'] = $user['user_id']; 
             $_SESSION['name'] = $user['name'];
             
@@ -53,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// --- ส่วนออกจากระบบ (Logout) แบบ GET ---
+// -ออกจากระบบ 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $get_action = $_GET['action'] ?? '';
 

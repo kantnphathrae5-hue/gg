@@ -16,36 +16,43 @@ $end_date_formatted = date('Y-m-d\TH:i', strtotime($event['end_date']));
 
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <title>แก้ไขกิจกรรม</title>
 </head>
+
 <body>
     <h2>แก้ไขกิจกรรม: <?php echo htmlspecialchars($event['event_name']); ?></h2>
-    
-    <form action="/routes/Event.php" method="POST">
+
+    <form action="/routes/event.php" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="action" value="update">
         <input type="hidden" name="event_id" value="<?php echo $event['event_id']; ?>">
-        
+
         <label>ชื่อกิจกรรม:</label><br>
         <input type="text" name="event_name" value="<?php echo htmlspecialchars($event['event_name']); ?>" required><br><br>
-        
+
         <label>รายละเอียด:</label><br>
         <textarea name="description"><?php echo htmlspecialchars($event['description']); ?></textarea><br><br>
-        
+
         <label>วันที่เริ่ม:</label><br>
         <input type="datetime-local" name="start_date" value="<?php echo $start_date_formatted; ?>" required><br><br>
-        
+
         <label>วันที่สิ้นสุด:</label><br>
         <input type="datetime-local" name="end_date" value="<?php echo $end_date_formatted; ?>" required><br><br>
-        
+
         <label>จำนวนที่รับ (คน):</label><br>
         <input type="number" name="max_participants" value="<?php echo $event['max_participants']; ?>"><br><br>
-        
+
         <label>สถานที่:</label><br>
         <input type="text" name="location" value="<?php echo htmlspecialchars($event['location']); ?>"><br><br>
-        
+
+        <label>อัปโหลดรูปภาพเพิ่มเติม (เลือกได้หลายรูป):</label>
+        <input type="file" name="event_images[]" accept="image/*" multiple><br>
+        <small style="color: gray;">*หากไม่ต้องการเพิ่มรูปใหม่ ให้เว้นว่างไว้</small><br><br>
+
         <button type="submit">บันทึกการแก้ไข</button>
         <a href="/templates/home.php">ยกเลิก</a>
     </form>
 </body>
+
 </html>

@@ -54,7 +54,7 @@ $history = getUserHistory($user_id);
                     <td><?php echo date('d/m/Y H:i', strtotime($row['start_date'])); ?></td>
                     <td><?php echo htmlspecialchars($row['location']); ?></td>
                     <?php 
-                        // ตรวจสอบสถานะและใส่สีให้ข้อความ
+                        
                         $status = empty($row['status']) ? 'pending' : strtolower($row['status']); 
                         $class_name = "text-" . $status;
                     ?>

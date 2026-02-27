@@ -1,7 +1,7 @@
 
 <?php
 
-// ฟังก์ชันดึงรายชื่อคนที่ลงทะเบียนในกิจกรรมนั้นๆ 
+
 function getRegistrationsByEvent($event_id)
 {
     global $conn;
@@ -24,7 +24,7 @@ function getRegistrationsByEvent($event_id)
     return $registrations;
 }
 
-// ฟังก์ชันอัปเดตสถานะ 
+
 function updateRegistrationStatus($registration_id, $status)
 {
     global $conn;
@@ -35,7 +35,7 @@ function updateRegistrationStatus($registration_id, $status)
     $stmt->close();
     return $result;
 }
-// ฟังก์ชันสำหรับอัปเดตสถานะการเช็คชื่อ 
+
 function updateCheckInStatus($registration_id, $is_checked_in)
 {
     global $conn;
@@ -51,7 +51,7 @@ function createRegistration($user_id, $event_id)
 {
     global $conn;
 
-    // 1. ตรวจสอบก่อนว่าเคยลงทะเบียนกิจกรรมนี้ไปแล้วหรือยัง
+    
     $check_sql = "SELECT registration_id FROM Registrations WHERE user_id = ? AND event_id = ?";
     $check_stmt = $conn->prepare($check_sql);
     $check_stmt->bind_param("ii", $user_id, $event_id);
@@ -63,7 +63,7 @@ function createRegistration($user_id, $event_id)
     }
     $check_stmt->close();
 
-    // 2. ถ้ายังไม่เคย ให้บันทึกข้อมูลใหม่ โดยกำหนดสถานะเริ่มต้นเป็น pending รออนุมัติ
+    
     $sql = "INSERT INTO Registrations (user_id, event_id, status) VALUES (?, ?, 'pending')";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("ii", $user_id, $event_id);
@@ -76,12 +76,12 @@ function createRegistration($user_id, $event_id)
 
 function getUserHistory($user_id) {
     global $conn;
-    // เชื่อมตาราง Registrations กับ Events เพื่อเอาชื่อกิจกรรมมาโชว์
+    
     $sql = "SELECT r.*, e.event_name, e.start_date, e.location 
             FROM Registrations r 
             JOIN Events e ON r.event_id = e.event_id 
             WHERE r.user_id = ? 
-            ORDER BY r.registration_id DESC"; // เรียงจากล่าสุดไปเก่าสุด
+            ORDER BY r.registration_id DESC"; 
             
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);

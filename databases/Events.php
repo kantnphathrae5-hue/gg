@@ -89,7 +89,7 @@ function createEvent($data) {
     return false;
 }
 
-// 2.บันทึกรูปภาพ
+
 function addEventImage($event_id, $image_path) {
     global $conn;
     $stmt = $conn->prepare("INSERT INTO Event_Images (event_id, image_path) VALUES (?, ?)");
@@ -98,7 +98,7 @@ function addEventImage($event_id, $image_path) {
     $stmt->close();
     return $result;
 }
-// ดึงเฉพาะกิจกรรมที่ "คนอื่นสร้าง" (สำหรับหน้า home.php)
+
 function getEventsForHome($current_user_id) {
     global $conn;
     $sql = "SELECT e.*, u.name as organizer_name 
@@ -118,7 +118,7 @@ function getEventsForHome($current_user_id) {
     }
     return $events;
 }
-// ดึงเฉพาะกิจกรรมที่ "ตัวเองสร้าง" (สำหรับหน้า manage_event.php)
+
 function getEventsByOrganizer($organizer_id) {
     global $conn;
     $sql = "SELECT e.*, u.name as organizer_name 
@@ -142,7 +142,7 @@ function getEventsByOrganizer($organizer_id) {
 function searchEventsForHome($current_user_id, $search_name = '', $start_date = '', $end_date = '') {
     global $conn;
     
-    // Query พื้นฐาน (ซ่อนกิจกรรมที่ตัวเองสร้าง)
+   
     $sql = "SELECT e.*, u.name as organizer_name 
             FROM Events e 
             JOIN Users u ON e.organizer_id = u.user_id 
@@ -151,23 +151,23 @@ function searchEventsForHome($current_user_id, $search_name = '', $start_date = 
     $types = "i";
     $params = [$current_user_id];
     
-    // 1. ถ้ามีการค้นหาด้วย "ชื่อกิจกรรม"
+  
     if (!empty($search_name)) {
         $sql .= " AND e.event_name LIKE ?";
         $types .= "s";
         $params[] = "%" . $search_name . "%";
     }
     
-    // 2. ถ้ามีการค้นหาด้วย "วันเริ่มต้น"
+   
     if (!empty($start_date)) {
         $sql .= " AND DATE(e.start_date) >= ?";
         $types .= "s";
         $params[] = $start_date;
     }
     
-    // 3. ถ้ามีการค้นหาด้วย "วันสิ้นสุด"
+   
     if (!empty($end_date)) {
-        // เช็คว่ากิจกรรมเริ่มก่อนหรือในวันสิ้นสุดที่ค้นหา
+       
         $sql .= " AND DATE(e.start_date) <= ?"; 
         $types .= "s";
         $params[] = $end_date;
@@ -177,7 +177,7 @@ function searchEventsForHome($current_user_id, $search_name = '', $start_date = 
     
     $stmt = $conn->prepare($sql);
     
-    // Bind parameters แบบไดนามิก
+   
     if (!empty($params)) {
         $stmt->bind_param($types, ...$params);
     }
