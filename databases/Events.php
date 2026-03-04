@@ -1,7 +1,5 @@
 <?php
 
-
-
 function getAllEvents() {
     global $conn;
     
@@ -21,7 +19,6 @@ function getAllEvents() {
     
     return $events;
 }
-
 
 function getEventById($id) {
     global $conn;
@@ -56,12 +53,8 @@ function updateEvent($id, $data) {
 function deleteEvent($id) {
     global $conn;
     
-   
     $conn->query("DELETE FROM Event_Images WHERE event_id = " . intval($id));
-    
-    
     $conn->query("DELETE FROM Registrations WHERE event_id = " . intval($id));
-    
     
     $stmt = $conn->prepare("DELETE FROM Events WHERE event_id = ?");
     $stmt->bind_param("i", $id);
@@ -88,7 +81,6 @@ function createEvent($data) {
     $stmt->close();
     return false;
 }
-
 
 function addEventImage($event_id, $image_path) {
     global $conn;
@@ -142,7 +134,6 @@ function getEventsByOrganizer($organizer_id) {
 function searchEventsForHome($current_user_id, $search_name = '', $start_date = '', $end_date = '') {
     global $conn;
     
-   
     $sql = "SELECT e.*, u.name as organizer_name 
             FROM Events e 
             JOIN Users u ON e.organizer_id = u.user_id 
@@ -151,23 +142,19 @@ function searchEventsForHome($current_user_id, $search_name = '', $start_date = 
     $types = "i";
     $params = [$current_user_id];
     
-  
     if (!empty($search_name)) {
         $sql .= " AND e.event_name LIKE ?";
         $types .= "s";
         $params[] = "%" . $search_name . "%";
     }
     
-   
     if (!empty($start_date)) {
         $sql .= " AND DATE(e.start_date) >= ?";
         $types .= "s";
         $params[] = $start_date;
     }
     
-   
     if (!empty($end_date)) {
-       
         $sql .= " AND DATE(e.start_date) <= ?"; 
         $types .= "s";
         $params[] = $end_date;
@@ -177,7 +164,6 @@ function searchEventsForHome($current_user_id, $search_name = '', $start_date = 
     
     $stmt = $conn->prepare($sql);
     
-   
     if (!empty($params)) {
         $stmt->bind_param($types, ...$params);
     }
@@ -192,5 +178,20 @@ function searchEventsForHome($current_user_id, $search_name = '', $start_date = 
         }
     }
     return $events;
+}
+
+// --- ฟังก์ชันใหม่: ดึงรูปภาพหน้าปกกิจกรรม 1 รูป ---
+function getEventCoverImage($event_id) {
+    global $conn;
+    $stmt = $conn->prepare("SELECT image_path FROM Event_Images WHERE event_id = ? LIMIT 1");
+    $stmt->bind_param("i", $event_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($row = $result->fetch_assoc()) {
+        return $row['image_path'];
+    }
+    // ถ้ารูปไม่มี ให้แสดงรูป placeholder ว่างๆ หรือตั้งค่า default
+    return 'https://via.placeholder.com/300x200?text=No+Image'; 
 }
 ?>
